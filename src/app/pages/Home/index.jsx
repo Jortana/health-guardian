@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { Formik, Field, Form, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
+import SAS from '../../../data/anxiety'
+import SDS from '../../../data/depression'
+import YBOCS from '../../../data/ocd'
+
 export default function Home() {
   const navigate = useNavigate()
   const [mentalStatus, setMentalStatus] = useState({
-    anxiety: { score: 0, total: 80, level: 0, label: '焦虑' },
-    depression: { score: 0, total: 80, level: 0, label: '抑郁' },
-    OCD: { score: 0, total: 80, level: 0, label: '强迫' }
+    anxiety: { score: 0, total: 80, level: -1, label: '焦虑' },
+    depression: { score: 0, total: 80, level: -1, label: '抑郁' },
+    OCD: { score: 0, scoreArr: [0, 0], level: -1, label: '强迫' }
   })
   const [mentalInit, setMentalInit] = useState(true)
   // const [cardInfo, setCardInfo] = useState({
@@ -36,7 +40,8 @@ export default function Home() {
         address: '',
         phone: ''
       }
-    ]
+    ],
+    set: false
   })
   // 健康卡片的验证规则
   const cardValidation = Yup.object({
@@ -46,7 +51,12 @@ export default function Home() {
       Yup.object({
         location: Yup.string().required('请填写场所'),
         address: Yup.string().required('请填写地址'),
-        phone: Yup.string().required('请填写紧急联系人电话号码')
+        phone: Yup.string()
+          .required('请填写紧急联系人电话号码')
+          .matches(
+            /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
+            '请正确填写电话号码'
+          )
       }).required('请填写至少一个紧急联系人电话号码')
     ).required('请添加至少一个地址')
   })
@@ -55,15 +65,20 @@ export default function Home() {
   // 是否正在编辑健康卡片
   const [editing, setEditing] = useState(false)
 
+  const baseEmojis = {
+    anxiety: '😶',
+    depression: '😶',
+    OCD: '😶'
+  }
   const emojiMap = {
-    anxiety: ['😶', '😀', '😰'],
-    depression: ['😶', '😀', '😞'],
-    OCD: ['😶', '😀', '🤨']
+    anxiety: ['😀', '😰', '😰', '😰'],
+    depression: ['😀', '😞', '😞', '😞'],
+    OCD: ['😀', '🤨', '🤨', '🤨']
   }
 
-  const levelLableMap = ['', '无', '轻度', '中度', '重度']
+  const levelLableMap = ['无', '轻度', '中度', '重度']
+  const baseLevelClass = ['bg-sky-500', 'hover:bg-sky-600']
   const levelClassMap = [
-    ['bg-sky-500', 'hover:bg-sky-600'],
     ['bg-emerald-400', 'hover:bg-emerald-300'], // 良好
     ['bg-amber-400', 'hover:bg-amber-300'], // 轻度
     ['bg-orange-400', 'hover:bg-orange-300'], // 中度
@@ -71,35 +86,40 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    cardValidation
-      .validate(cardInfo)
-      .then(() => {
-        setCardInit(true)
-        setEditing(false)
-        // setCardInit(true)
-      })
-      .catch(() => {
-        setCardInit(false)
-        setEditing(true)
-        // setCardInit(true)
-      })
-
-    // console.log('init')
     // eslint-disable-next-line no-undef
-    // chrome.storage.sync.get('mentalStatus', (res) => {
-    //   const mentalStatus = res.mentalStatus
-    //   console.log('mentalStatus', mentalStatus)
-    //   setMentalStatus(mentalStatus)
-    //   if (
-    //     mentalStatus.anxiety.level === 0 &&
-    //     mentalStatus.depression.level === 0 &&
-    //     mentalStatus.depression.level === 0
-    //   ) {
-    //     setIsInit(false)
-    //   } else {
-    //     setIsInit(true)
-    //   }
-    // })
+    chrome.storage.sync.get('mentalStatus', (res) => {
+      const mentalStatus = res.mentalStatus
+      console.log('mentalStatus', mentalStatus)
+      setMentalStatus(mentalStatus)
+      if (
+        mentalStatus.anxiety.level === -1 &&
+        mentalStatus.depression.level === -1 &&
+        mentalStatus.depression.level === -1
+      ) {
+        setMentalInit(false)
+      } else {
+        setMentalInit(true)
+      }
+    })
+
+    // eslint-disable-next-line no-undef
+    chrome.storage.sync.get('cardInfo', (res) => {
+      const { cardInfo: syncInfo } = res
+      console.log(syncInfo)
+      cardValidation
+        .validate(syncInfo)
+        .then(() => {
+          setCardInit(true)
+          setEditing(false)
+          // setCardInit(true)
+        })
+        .catch(() => {
+          setCardInit(false)
+          setEditing(true)
+          // setCardInit(true)
+        })
+      setCardInfo(syncInfo)
+    })
 
     if (
       mentalStatus.anxiety.level === 0 &&
@@ -110,7 +130,7 @@ export default function Home() {
     } else {
       setMentalInit(true)
     }
-
+    /*
     setMentalStatus({
       anxiety: {
         score: 10,
@@ -123,7 +143,18 @@ export default function Home() {
       depression: { score: 0, total: 80, level: 0, label: '抑郁' },
       OCD: { score: 0, total: 100, level: 0, label: '强迫' }
     })
+    */
   }, [])
+
+  const submitCard = (values) => {
+    values.set = true
+    setCardInfo(values)
+    setEditing(false)
+    // eslint-disable-next-line no-undef
+    chrome.storage.sync.set({
+      cardInfo: values
+    })
+  }
 
   return (
     <div className="bg-white p-10 min-h-full">
@@ -151,11 +182,10 @@ export default function Home() {
                   initialValues={cardInfo}
                   validationSchema={cardValidation}
                   onSubmit={(values) => {
-                    setCardInfo(values)
-                    setEditing(false)
+                    submitCard(values)
                   }}
                 >
-                  {({ values, touched, errors, handleSubmit }) => (
+                  {({ values }) => (
                     <Form className="space-y-1">
                       <div className="form-control">
                         <label className="label pb-1">
@@ -389,12 +419,12 @@ export default function Home() {
           {mentalInit && (
             <div className="container mx-auto space-y-4">
               <div className="rounded-lg py-5 shadow-md border border-slate-100 relative min-h-[150px]">
-                {mentalStatus.anxiety.level === 0 && (
+                {mentalStatus.anxiety.level === -1 && (
                   <div className="absolute top-0 left-0 w-full h-full bg-slate-50/80 backdrop-blur flex justify-center items-center">
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        console.log('a')
+                        navigate('/anxiety')
                       }}
                     >
                       开始焦虑测试
@@ -403,7 +433,9 @@ export default function Home() {
                 )}
                 <div className="flex pl-4 pr-10 justify-between">
                   <div className="flex justify-center p-2 align-middle text-5xl">
-                    {emojiMap.anxiety[mentalStatus.anxiety.level]}
+                    {mentalStatus.anxiety.level >= 0
+                      ? emojiMap.anxiety[mentalStatus.anxiety.level]
+                      : baseEmojis.anxiety}
                   </div>
                   <div className="flex flex-col justify-center items-end">
                     <div className="text-3xl font-semibold leading-none">
@@ -411,26 +443,30 @@ export default function Home() {
                       {mentalStatus.anxiety.total}
                     </div>
                     <div
-                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 ${levelClassMap[
-                        mentalStatus.anxiety.level
-                      ].join(' ')}`}
+                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 text-base ${
+                        mentalStatus.anxiety.level >= 0
+                          ? levelClassMap[mentalStatus.anxiety.level].join(' ')
+                          : baseLevelClass.join(' ')
+                      }`}
                     >
                       {levelLableMap[mentalStatus.anxiety.level] +
                         mentalStatus.anxiety.label}
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 px-7 text-sm text-slate-700">
-                  {mentalStatus.anxiety.description}
-                </div>
+                {mentalStatus.anxiety.level >= 0 && (
+                  <div className="mt-3 px-7 text-tiny text-slate-700">
+                    {SAS.descriptions[mentalStatus.anxiety.level]}
+                  </div>
+                )}
               </div>
               <div className="rounded-lg py-5 shadow-md border border-slate-100 relative min-h-[150px]">
-                {mentalStatus.depression.level === 0 && (
+                {mentalStatus.depression.level === -1 && (
                   <div className="absolute top-0 left-0 w-full h-full bg-slate-50/80 backdrop-blur flex justify-center items-center">
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        console.log('a')
+                        navigate('/depresstion')
                       }}
                     >
                       开始抑郁测试
@@ -439,7 +475,9 @@ export default function Home() {
                 )}
                 <div className="flex pl-4 pr-10 justify-between">
                   <div className="flex justify-center p-2 align-middle text-5xl">
-                    {emojiMap.depression[mentalStatus.depression.level]}
+                    {mentalStatus.depression.level >= 0
+                      ? emojiMap.depression[mentalStatus.depression.level]
+                      : baseEmojis.depression}
                   </div>
                   <div className="flex flex-col justify-center items-end">
                     <div className="text-3xl font-semibold leading-none">
@@ -447,26 +485,32 @@ export default function Home() {
                       {mentalStatus.depression.total}
                     </div>
                     <div
-                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 ${levelClassMap[
-                        mentalStatus.depression.level
-                      ].join(' ')}`}
+                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 text-base ${
+                        mentalStatus.depression.level >= 0
+                          ? levelClassMap[mentalStatus.depression.level].join(
+                              ' '
+                            )
+                          : baseLevelClass.join(' ')
+                      }`}
                     >
                       {levelLableMap[mentalStatus.depression.level] +
                         mentalStatus.depression.label}
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 px-7 text-sm text-slate-700">
-                  {mentalStatus.depression.description}
-                </div>
+                {mentalStatus.depression.level >= 0 && (
+                  <div className="mt-3 px-7 text-tiny text-slate-700">
+                    {SDS.descriptions[mentalStatus.depression.level]}
+                  </div>
+                )}
               </div>
               <div className="rounded-lg py-5 shadow-md border border-slate-100 relative min-h-[150px]">
-                {mentalStatus.OCD.level === 0 && (
+                {mentalStatus.OCD.level === -1 && (
                   <div className="absolute top-0 left-0 w-full h-full bg-slate-50/80 backdrop-blur flex justify-center items-center">
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        console.log('a')
+                        navigate('/ocd')
                       }}
                     >
                       开始强迫测试
@@ -475,25 +519,32 @@ export default function Home() {
                 )}
                 <div className="flex pl-4 pr-10 justify-between">
                   <div className="flex justify-center p-2 align-middle text-5xl">
-                    {emojiMap.OCD[mentalStatus.OCD.level]}
+                    {mentalStatus.OCD.level >= 0
+                      ? emojiMap.OCD[mentalStatus.OCD.level]
+                      : baseEmojis.OCD}
                   </div>
                   <div className="flex flex-col justify-center items-end">
                     <div className="text-3xl font-semibold leading-none">
-                      {mentalStatus.OCD.score} / {mentalStatus.OCD.total}
+                      {mentalStatus.OCD.scoreArr[0]} {' + '}
+                      {mentalStatus.OCD.scoreArr[1]}
                     </div>
                     <div
-                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 ${levelClassMap[
-                        mentalStatus.OCD.level
-                      ].join(' ')}`}
+                      className={`mt-2 text-sky-50 cursor-pointer w-fit rounded px-2 text-base ${
+                        mentalStatus.OCD.level >= 0
+                          ? levelClassMap[mentalStatus.OCD.level].join(' ')
+                          : baseLevelClass.join(' ')
+                      }`}
                     >
                       {levelLableMap[mentalStatus.OCD.level] +
                         mentalStatus.OCD.label}
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 px-7 text-sm text-slate-700">
-                  {mentalStatus.OCD.description}
-                </div>
+                {mentalStatus.OCD.level >= 0 && (
+                  <div className="mt-3 px-7 text-tiny text-slate-700">
+                    {YBOCS.descriptions[mentalStatus.OCD.level]}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -507,9 +558,9 @@ export default function Home() {
               >
                 开始测试
               </button>
-              <p className="text-sm mt-3">您还没有进行心理状态的测评，</p>
-              <p className="text-sm">您可以选择随时选择任何一项进行测试，</p>
-              <p className="text-sm">点击按钮测试开始焦虑状态的测试。</p>
+              <p className="text-tiny mt-3">您还没有进行心理状态的测评，</p>
+              <p className="text-tiny">您可以选择随时选择任何一项进行测试，</p>
+              <p className="text-tiny">点击按钮测试开始焦虑状态的测试。</p>
             </div>
           )}
         </section>

@@ -1,17 +1,4 @@
-// import Home from './pages/Home'
-
-// function App() {
-//   console.log(window.location)
-//   return (
-//     <div className="bg-slate-100 min-h-screen">
-//       <Home />
-//     </div>
-//   )
-// }
-
-// export default App
-
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useRoutes, useNavigate, useLocation } from 'react-router-dom'
 
 import routes from './routes'

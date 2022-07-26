@@ -35,6 +35,7 @@ export default function Depression() {
       {/* 隐藏 */}
       <Toaster />
       <ScoreModal
+        type="depression"
         scoreVisible={scoreVisible}
         score={score}
         total={total}
@@ -82,7 +83,7 @@ export default function Depression() {
             setSubmitting(false)
           }}
         >
-          {({ values, touched, errors, handleSubmit }) => (
+          {({ values, touched, errors }) => (
             <Form className="space-y-4">
               {questions.map((question, index) => {
                 const content = question.question

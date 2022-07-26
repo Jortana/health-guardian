@@ -24,9 +24,11 @@ export default function OCD() {
     visibleArr[questionIndex] = true
   })
   const [questionsVisible, setQuestionsVisible] = useState(visibleArr)
+  // 问卷是否完成
+  const [completed, setComplteted] = useState(false)
 
   const setOCD = () => {
-    console.log('setOCD')
+    setComplteted(true)
   }
 
   const selectHandler = (index, optionIndex, values, touched) => {
@@ -64,6 +66,7 @@ export default function OCD() {
         onChange={(visible) => {
           setScoreVisible(visible)
         }}
+        completed={completed}
       />
       {/* ************ */}
       <h1 className="text-3xl font-bold">强迫测试</h1>
@@ -109,7 +112,7 @@ export default function OCD() {
             setSubmitting(false)
           }}
         >
-          {({ values, touched, errors, handleSubmit }) => (
+          {({ values, touched, errors }) => (
             <Form className="space-y-4">
               {questions.map((question, index) => {
                 const content = question.question

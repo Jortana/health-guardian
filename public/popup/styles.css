@@ -1,3 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 从下翻上来出现的动画 */
+.flip-in-hor-top {
+  animation: flip-in-hor-top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes flip-in-hor-top {
+  0% {
+    transform: rotateX(-80deg);
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    transform: rotateX(0);
+    opacity: 1;
+    display: block;
+  }
+}
+
+/* 从上翻下来出现的动画 */
+.flip-in-hor-bottom {
+  animation: flip-in-hor-bottom 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s
+    both;
+}
+
+@keyframes flip-in-hor-bottom {
+  0% {
+    transform: rotateX(80deg);
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    transform: rotateX(0);
+    opacity: 1;
+    display: block;
+  }
+}
+
+/* 从下往上翻出去的动画 */
+.flip-out-hor-top {
+  animation: flip-out-hor-top 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+
+@keyframes flip-out-hor-top {
+  0% {
+    transform: rotateX(0);
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    transform: rotateX(70deg);
+    opacity: 0;
+    display: none;
+  }
+}
+
+/* 从上往下翻出去的动画 */
+.flip-out-hor-bottom {
+  animation: flip-out-hor-bottom 0.15s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+}
+
+@keyframes flip-out-hor-bottom {
+  0% {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(-70deg);
+    opacity: 0;
+  }
+}

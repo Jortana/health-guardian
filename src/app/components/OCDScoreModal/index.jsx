@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom'
 export default function OCDScoreModal(props) {
   const navigate = useNavigate()
 
-  const { score, descriptions, scoreArr, onChange } = props
+  const { score, descriptions, scoreArr, onChange, completed } = props
   const [scoreVisible, setScoreVisible] = useState(props.scoreVisible)
   const [description, setDescription] = useState('')
+  // const [url, setUrl] = useState('')
 
   useEffect(() => {
     setScoreVisible(props.scoreVisible)
@@ -37,6 +38,22 @@ export default function OCDScoreModal(props) {
     }
 
     setDescription(descriptions[level])
+
+    // 存到用户个人数据
+    if (completed) {
+      // eslint-disable-next-line no-undef
+      chrome.storage.sync.get('mentalStatus', (res) => {
+        const { mentalStatus } = res
+
+        mentalStatus.OCD.score = score
+        mentalStatus.OCD.scoreArr = scoreArr
+        mentalStatus.OCD.level = level
+        // eslint-disable-next-line no-undef
+        chrome.storage.sync.set({
+          mentalStatus
+        })
+      })
+    }
   }, [props, descriptions, score, scoreArr])
 
   return (

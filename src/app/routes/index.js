@@ -1,3 +1,5 @@
+import React from 'react'
+
 import AppFrame from '../../layout/frame/AppFrame'
 import Home from '../pages/Home'
 import Anxiety from '../pages/Anxiety'

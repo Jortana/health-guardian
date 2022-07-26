@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.{html,js}'],
   theme: {
-    extend: {}
+    extend: {
+      fontSize: {
+        tiny: '.875rem'
+      }
+    }
   },
   daisyui: {
     themes: ['winter']

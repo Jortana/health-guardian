@@ -54,10 +54,23 @@
         </div>
       </div>
       <div
-        class="flex justify-center items-center p-4 mt-3 mx-auto bg-white rounded-xl shadow border border-slate-100"
+        id="sos-btn-container"
+        class="flex justify-evenly items-center p-2 mt-3 mx-auto bg-white rounded-xl shadow border border-slate-100 relative min-h-[58px]"
       >
-        <button class="btn btn-primary btn-xs">设置健康卡片</button>
-        <!-- <button id="sos-btn" class="btn btn-circle btn-error">SOS</button> -->
+        <button
+          type="button"
+          id="set-health-card"
+          class="btn btn-primary btn-xs"
+        >
+          设置健康卡片
+        </button>
+        <button
+          type="button"
+          id="sos-btn"
+          class="btn btn-circle btn-error min-h-0 h-10 w-10 z-0 absolute"
+        >
+          SOS
+        </button>
       </div>
     </div>
   </body>
