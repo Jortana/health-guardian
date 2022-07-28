@@ -8,6 +8,36 @@
     <link rel="stylesheet" href="../output.css" />
   </head>
   <body>
+    <div
+      id="check-modal"
+      class="w-full h-full flex-col justify-center items-center absolute bg-white z-20 hidden"
+    >
+      <input id="success-check" class="hidden" type="checkbox" />
+
+      <svg width="400" height="200" class="scale-50 -translate-y-4">
+        <circle
+          fill="none"
+          stroke="#68E534"
+          stroke-width="20"
+          cx="200"
+          cy="200"
+          r="190"
+          class="circle scale-50 translate-x-1/4"
+          stroke-linecap="round"
+          transform="rotate(-90 200 200)"
+        />
+        <polyline
+          fill="none"
+          stroke="#68E534"
+          stroke-width="24"
+          points="88,214 173,284 304,138"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="tick scale-50 translate-x-1/4"
+        />
+      </svg>
+      <h2 class="text-xl opacity-0 font-bold -translate-y-6">呼救成功</h2>
+    </div>
     <div class="w-72 p-6 pb-10" id="test">
       <h1 class="text-xl mb-2">健康状态</h1>
       <div

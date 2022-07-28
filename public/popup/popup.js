@@ -21,6 +21,11 @@ const setHealthCard = document.getElementById('set-health-card')
 const sosContainer = document.getElementById('sos-btn-container')
 // 呼救按钮
 const sosBtn = document.getElementById('sos-btn')
+// 成功提示
+const checkModal = document.getElementById('check-modal')
+// 控制打勾的 checkbox
+const successCheckbox = document.getElementById('success-check')
+
 // 设置健康卡片按钮的点击事件
 setHealthCard &&
   setHealthCard.addEventListener('click', () => {
@@ -156,6 +161,15 @@ chrome.storage.sync.get('cardInfo', (res) => {
     btn.innerText = situation.location
     btn.addEventListener('click', () => {
       console.log(situation)
+      checkModal.classList.remove('hidden')
+      checkModal.classList.add('flex')
+      successCheckbox.checked = true
+
+      setTimeout(() => {
+        checkModal.classList.remove('flex')
+        checkModal.classList.add('hidden')
+        successCheckbox.checked = false
+      }, 3000)
     })
     sosContainer.appendChild(btn)
   })
@@ -168,7 +182,6 @@ chrome.storage.sync.get('cardInfo', (res) => {
     const btns = document.getElementsByClassName('situation-btn')
     for (let btn of btns) {
       btn.classList.add('flip-in-hor-top')
-      // btn.classList.remove('flip-out-hor-top')
       btn.classList.remove('flip-out-hor-bottom', 'hidden')
     }
   })
@@ -184,7 +197,6 @@ chrome.storage.sync.get('cardInfo', (res) => {
     const btns = document.getElementsByClassName('situation-btn')
     for (let btn of btns) {
       btn.classList.remove('flip-in-hor-top')
-      // btn.classList.add('flip-out-hor-top')
       btn.classList.add('flip-out-hor-bottom')
       setTimeout(() => {
         btn.classList.add('hidden')

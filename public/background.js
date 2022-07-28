@@ -66,24 +66,19 @@ chrome.runtime.onInstalled.addListener(() => {
       })
     }
   })
-})
 
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   const { type } = message
-//   console.log(type)
-//   switch (type) {
-//     case 'getMentalStatus':
-//       const status = getMentalStatus()
-//       sendResponse(status)
-//       break
-//     case 'setMentalStatus':
-//       const { data } = message
-//       setMentalStatus(data)
-//       break
-//     default:
-//       break
-//   }
-// })
+  chrome.storage.sync.get('settings', (res) => {
+    console.log('res', res)
+    const { settings } = res
+    if (!settings) {
+      chrome.storage.sync.set({
+        settings: {
+          allowFilter: true
+        }
+      })
+    }
+  })
+})
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
   for (let [key, { oldValue, newValue }] of Object.entries(changes)) {

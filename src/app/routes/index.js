@@ -5,11 +5,12 @@ import Home from '../pages/Home'
 import Anxiety from '../pages/Anxiety'
 import Depression from '../pages/Depression'
 import OCD from '../pages/OCD'
+import Settings from '../pages/Settings'
 
 // 用于显示页面标题和鉴权
 const TitleAuth = ({ children, title }) => {
   document.title = `${title} - 健康守卫`
-  return <div>{children}</div>
+  return <>{children}</>
 }
 
 const element = [
@@ -46,6 +47,14 @@ const element = [
         element: (
           <TitleAuth title="强迫测试">
             <OCD />
+          </TitleAuth>
+        )
+      },
+      {
+        path: '/settings',
+        element: (
+          <TitleAuth title="强迫测试">
+            <Settings />
           </TitleAuth>
         )
       }

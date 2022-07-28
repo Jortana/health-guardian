@@ -57,14 +57,18 @@ export default function Header() {
               强迫测试
             </NavLink>
           </li>
-          {/* <li className="flex">
+          <li className="flex">
             <NavLink
-              to="/"
-              className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent"
+              to="/settings"
+              className={({ isActive }) =>
+                isActive
+                  ? 'flex items-center px-4 -mb-1 border-b-2 border-sky-400 dark:border-transparent'
+                  : 'flex items-center px-4 -mb-1 border-b-2 dark:border-transparent'
+              }
             >
               设置
             </NavLink>
-          </li> */}
+          </li>
         </ul>
       </div>
     </header>
