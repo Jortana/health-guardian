@@ -6,7 +6,14 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "scripting", "runtime", "storage"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "runtime",
+    "storage",
+    "http://jortana.fun:9003",
+    "https://jortana.fun:9003"
+  ],
   "action": {
     "default_popup": "./popup/index.html",
     "default_title": "Open the popup"

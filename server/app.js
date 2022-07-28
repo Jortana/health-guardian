@@ -1,5 +1,6 @@
+const fs = require('fs')
 const express = require('express')
-const http = require('http')
+const https = require('https')
 const morgan = require('morgan')
 const cors = require('cors')
 const router = require('./api')
@@ -25,8 +26,15 @@ app.use('/api', router)
 // 挂载统一处理服务端错误中间件
 app.use(errorHandler())
 
-const httpServer = http.createServer(app)
+const privateKey = fs.readFileSync('./keys/8110627_jortana.fun.key', 'utf8')
+const certificate = fs.readFileSync('./keys/8110627_jortana.fun.pem', 'utf8')
+const credentials = { key: privateKey, cert: certificate }
+const httpsServer = https.createServer(credentials, app)
 
-httpServer.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`)
+httpsServer.listen(PORT, () => {
+  console.log(`Server is running at https://localhost:${PORT}`)
 })
+
+// app.listen(PORT, () => {
+//   console.log(`Server is running at http://localhost:${PORT}`)
+// })
