@@ -9,9 +9,7 @@ const { successRes } = require('../utils/resBuilder')
  */
 exports.setData = async (req, res, next) => {
   try {
-    console.log(req.body)
     const { data } = req.body
-    console.log(data)
     const emotionData = new Emotion(data)
     await emotionData.save()
     res.status(200).json(successRes({ message: '反馈成功' }))
