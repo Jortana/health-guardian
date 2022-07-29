@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# 健康守卫 Health Guardian
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![javascript-badge](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![react-badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![react-router-badge](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![tailwindcss-badge](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![express.js-badge](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+## 功能简介
 
-## Available Scripts
+疫情期间，尤其是被迫封闭的人群的心理问题层出不穷，更容易出现焦虑、抑郁和强迫等情绪。世卫组织表明新冠大流行第一年，全球焦虑和抑郁发病率大幅增加了 25%，隔离期间或正常办公期间可能没有简单高效的紧急呼救方案。在此背景下，本扩展提供以下功能：
+* 帮助没有心理健康专业知识的用户主动关注心理健康，提供正确自测的材料和方法。
+* 提供紧急呼救功能，快速发送信息给紧急联系人以便施救。
+* 根据指定方法过滤网页，在用户浏览网页时提供提醒功能。
 
-In the project directory, you can run:
+## 功能预览图
 
-### `npm start`
+### 总览
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+可以查看自己的健康卡片以及心理健康状态
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![总览](/imgs/总览.png)
 
-### `npm test`
+### Popup 页面
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+点击扩展按钮后弹出的页面
 
-### `npm run build`
+![popup](/imgs/popup.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 测试页面
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+心理自测的页面
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![测试](/imgs/测试.png)
 
-### `npm run eject`
+### 设置页面
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+进行扩展设置的页面
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![设置](/imgs/设置.png)

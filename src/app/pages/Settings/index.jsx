@@ -141,7 +141,7 @@ export default function Settings() {
               {settings.filterWords.map((word, index) => {
                 return (
                   <div
-                    className="flex items-center bg-slate-200 hover:bg-slate-300 px-2 py-1"
+                    className="flex items-center bg-slate-200 hover:bg-slate-300 px-2 py-1 rounded"
                     key={word}
                   >
                     {word}
